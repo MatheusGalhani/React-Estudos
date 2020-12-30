@@ -10,7 +10,9 @@
   "author": "Matheus Galhani",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "date-fns": "^2.16.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.9"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
