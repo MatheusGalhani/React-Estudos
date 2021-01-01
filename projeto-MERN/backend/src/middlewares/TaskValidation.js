@@ -46,12 +46,22 @@ const TaskValidation = async(req, res, next) => {
         return res.status(400).json(errors[0])
     } else {
         let exists;
-        exists = await TaskModel.findOne({
-            'when': {'$eq': new Date(when)},
-            'macadress': {'$in': macadress}
-        });
+        if (req.params.id) {
+            exists = await TaskModel.findOne({
+                '_id': {'$ne': req.params.id},
+                'when': {'$eq': new Date(when)},
+                'macadress': {'$in': macadress},
+            });
+        } else {
+            exists = await TaskModel.findOne({
+                'when': {'$eq': new Date(when)},
+                'macadress': {'$in': macadress},
+                
+            });
+        }
+        
         if(exists) {
-            return res.status(400).json({error: 'Já existe essa atividade'})
+            return res.status(400).json({error: 'Já existe uma atividade nesse mesmo dia e hora.'})
         } 
         next();
         
