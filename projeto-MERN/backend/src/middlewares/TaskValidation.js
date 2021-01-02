@@ -3,12 +3,12 @@ const { isPast } = require('date-fns')
 
 const TaskValidation = async(req, res, next) => {
     const reqJson = req.body; 
-    const { macadress, when } = req.body; 
+    const { macaddress, when } = req.body; 
 
     const requiredFields = {
-        macadress(fieldValue) {
+        macaddress(fieldValue) {
             if (!fieldValue) {
-                return {error: 'Macadress é obrigatório'}
+                return {error: 'Macaddress é obrigatório'}
             }
         },
         type(fieldValue) {
@@ -50,13 +50,12 @@ const TaskValidation = async(req, res, next) => {
             exists = await TaskModel.findOne({
                 '_id': {'$ne': req.params.id},
                 'when': {'$eq': new Date(when)},
-                'macadress': {'$in': macadress},
+                'macaddress': {'$in': macaddress}
             });
         } else {
             exists = await TaskModel.findOne({
                 'when': {'$eq': new Date(when)},
-                'macadress': {'$in': macadress},
-                
+                'macaddress': {'$in': macaddress}                
             });
         }
         
