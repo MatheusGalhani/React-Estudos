@@ -5,7 +5,7 @@ import bell from '../../assets/bell.png';
 import * as Styled from './styles';
 
 
-function Header() {
+function Header(props) {
     return (
         <React.Fragment>
             <Styled.Container>
@@ -19,10 +19,10 @@ function Header() {
                     <span className="dividir"/>
                     <a href="#">SINCRONIZAR CELULAR</a>
                     <span className="dividir"/>
-                    <a href="#" id="notification">
+                    <button id="notification" type="submit" onClick={props.clickNotification}>
                         <img src={bell} alt="Notificação"/>
-                        <span>5</span>
-                    </a>
+                        <span>{props.lateCount}</span>
+                    </button>
                 </Styled.RightSide>
             </Styled.Container>
         </React.Fragment>

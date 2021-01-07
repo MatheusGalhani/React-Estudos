@@ -29,7 +29,14 @@ export const RightSide = styled.div`
     align-items: center;
     justify-content: flex-end;
 
-    a {
+    button {
+        border: none;
+        background: none;
+        cursor: pointer;        
+        outline:none;            
+    }
+
+    a, button {
         color: #FFF;
         font-weight: bold;
         text-decoration: none;
@@ -54,6 +61,7 @@ export const RightSide = styled.div`
             top: -20px;
             right: 10px;
         }
+
 
         &:hover {
             opacity: 0.5;
