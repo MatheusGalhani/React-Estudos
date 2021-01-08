@@ -3,6 +3,7 @@ import React from 'react';
 import logo from '../../assets/logo.png';
 import bell from '../../assets/bell.png';
 import * as Styled from './styles';
+import { Link } from 'react-router-dom'
 
 
 function Header(props) {
@@ -13,9 +14,9 @@ function Header(props) {
                     <img src={logo} alt="Logo" />
                 </Styled.LeftSide>
                 <Styled.RightSide>
-                    <a href="#">INÍCIO</a>
+                    <Link to="/">INÍCIO</Link>
                     <span className="dividir"/>
-                    <a href="#">NOVA TAREFA</a>
+                    <Link to="/task">NOVA TAREFA</Link>
                     <span className="dividir"/>
                     <a href="#">SINCRONIZAR CELULAR</a>
                     <span className="dividir"/>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import * as Styled from './styles';
 import api from '../../services/api'
@@ -65,7 +66,13 @@ function Home() {
                 <Styled.Content>
                     {
                         tasks.map(taskElement => (
-                            <TaskCard key={taskElement._id} title={taskElement.title} type={taskElement.type} when={taskElement.when}/>
+                            <Link to={`/task/${taskElement._id}`}>
+                                <TaskCard key={taskElement._id} 
+                                      title={taskElement.title} 
+                                      type={taskElement.type} 
+                                      when={taskElement.when}/>
+                            </Link>
+                            
                         ))
                     }
                 </Styled.Content>
