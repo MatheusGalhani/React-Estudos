@@ -66,11 +66,12 @@ function Home() {
                 <Styled.Content>
                     {
                         tasks.map(taskElement => (
-                            <Link to={`/task/${taskElement._id}`}>
+                            <Link to={`/task/${taskElement._id}`} key={`redirect-${taskElement._id}`}>
                                 <TaskCard key={taskElement._id} 
                                       title={taskElement.title} 
                                       type={taskElement.type} 
-                                      when={taskElement.when}/>
+                                      when={taskElement.when}
+                                      done={taskElement.done}/>
                             </Link>
                             
                         ))

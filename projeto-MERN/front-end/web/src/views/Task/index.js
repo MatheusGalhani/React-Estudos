@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import * as Styled from './styles';
 import api from '../../services/api';
@@ -20,7 +21,7 @@ function Task(props) {
     const [date, setDate] = useState('');
     const [hour, setHour] = useState('');
     const [macaddress, setMacaddress] = useState('11:1B:11:11:1A:B1');
-
+    const [redirect, setRedirect] = useState(false);
     async function lateVerify() {
         await api.get(`/task/filter/late/11:1B:11:11:1A:B1`).then(response => {
             setLateTasks(response.data.length);
@@ -45,25 +46,95 @@ function Task(props) {
         if (props.match.params._id) loadComponentsByID();
     }, []);
 
-    async function saveForm() {
-        await api.post('/task', {
-            macaddress,
-            type,
-            title,
-            description,
-            "when": `${date}T${hour}:00.000`,
-            done
-        }).then(response => {
-            console.log(response.data)
-        }).catch(error => {
-            console.log(error)
+    const validateFields = () => {
+        const requiredFields = {
+            title() {
+                if (!title) {
+                    return "Você precisa informar o titulo da tarefa"
+                }
+            },
+            description() {
+                if (!description) {
+                    return "Você precisa informar a descrição da tarefa"
+                }
+            },
+            date() {
+                if (!date) {
+                    return "Você precisa informar a data da tarefa"
+                }
+            },
+            hour() {
+                if (!hour) {
+                    return "Você precisa informar a hora da tarefa"
+                }
+            }
+        }
+
+        const errors = [];
+    
+        Object.entries(requiredFields).forEach(([key, methodValidate]) => {
+            const result = methodValidate();
+            if (result !== undefined) errors.push(result);
         });
-        console.log("Aq")
+        
+        if(errors.length > 0){
+            return errors[0]
+        } else {
+            return null;
+        }
+    }
+
+    async function saveForm() {     
+        const messageForUser = validateFields();
+        if (messageForUser) {
+            alert(messageForUser);
+        } else {
+            if (props.match.params._id) {
+                await api.put(`/task/${props.match.params._id}`, {
+                    macaddress,
+                    type,
+                    title,
+                    description,
+                    "when": `${date}T${hour}:00.000`,
+                    done
+                }).then(response => {
+                    setRedirect(true);
+                }).catch(error => {
+                    console.log(error);
+                });
+            } else {
+                await api.post('/task', {
+                    macaddress,
+                    type,
+                    title,
+                    description,
+                    "when": `${date}T${hour}:00.000`,
+                    done
+                }).then(response => {
+                    setRedirect(true);
+                }).catch(error => {
+                    console.log(error);
+                });
+            };
+        }
+    }
+
+    async function deleteItemByID() {
+        const res = window.confirm("Deseja realmente remover a tarefa? ")
+        if (props.match.params._id && res) {
+            await api.delete(`/task/${props.match.params._id}`).then(response => {
+                setRedirect(true);
+            }).catch(error => {
+                console.log(error);
+            });
+        }
     }
 
     return (
         <React.Fragment>
             <Styled.Container>
+                { redirect ? <Redirect to="/"/> : null }
+
                 <Header lateCount={lateTask} />
 
                 <Styled.Form>
@@ -107,7 +178,11 @@ function Task(props) {
                             <input type="checkbox" checked={done} onChange={(e) => setDone(e.target.checked)}/>
                             <span>CONCLUÍDO</span>
                         </div>
-                        <button type="button">EXCLUIR</button>
+                        {
+                            props.match.params._id ?
+                            <button type="button" onClick={deleteItemByID}>EXCLUIR</button>
+                            : null
+                        }
                     </Styled.Options>
 
                     <Styled.Save>

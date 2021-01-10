@@ -11,7 +11,7 @@ function TaskCard(props) {
 
     return (
         <React.Fragment>
-            <Styled.Container>
+            <Styled.Container done={props.done}>
                 <Styled.TopCard>
                     <img src={typeIcons[props.type]} alt="Icone da Tarefa" />
                     <h3>{props.title}</h3>

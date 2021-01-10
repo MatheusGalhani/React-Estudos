@@ -29,6 +29,7 @@ export const Content = styled.div`
     width: 100%;
     flex-wrap: wrap;
     justify-content: center;
+    margin-bottom: 70px;
 `;
 
 export const Title = styled.div`
