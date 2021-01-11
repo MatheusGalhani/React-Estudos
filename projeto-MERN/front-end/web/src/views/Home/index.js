@@ -17,7 +17,7 @@ function Home() {
     const [redirect, setRedirect] = useState(false);
 
     async function loadTasks() {
-        await api.get(`/task/filter/${filterActived}/`).then(response => {
+        await api.get(`/task/filter/${filterActived}/${isConnected}`).then(response => {
             setTasks(response.data);
         });
     }
