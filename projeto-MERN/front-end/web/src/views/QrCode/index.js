@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect} from 'react-router-dom';
 
 import * as Styled from './styles';
@@ -7,6 +7,7 @@ import Qr from 'qrcode.react';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import isConnected from '../../utils/isConnected';
 
 
 function QrCode() {
@@ -19,7 +20,11 @@ function QrCode() {
         setRedirect(true);
         window.location.reload();
     }
-  
+    
+    useEffect(() => {
+        if (isConnected) setRedirect(true)
+    }, []);
+
 
     return (
         <React.Fragment>
