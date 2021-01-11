@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import TypeIcons from '../../utils/typeIcons';
+import isConnected from '../../utils/isConnected';
 
 
 function Task(props) {
@@ -17,20 +18,21 @@ function Task(props) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [done, setDone] = useState(false);
-    const [id, setId] = useState('');
     const [date, setDate] = useState('');
     const [hour, setHour] = useState('');
-    const [macaddress, setMacaddress] = useState('11:1B:11:11:1A:B1');
+    const [macaddress, setMacaddress] = useState('');
     const [redirect, setRedirect] = useState(false);
+    const [redirectQr, setRedirectQr]  = useState(false);
+
+    
     async function lateVerify() {
-        await api.get(`/task/filter/late/11:1B:11:11:1A:B1`).then(response => {
+        await api.get(`/task/filter/late/${macaddress}`).then(response => {
             setLateTasks(response.data.length);
         });
     }
 
     async function loadComponentsByID() {
         await api.get(`/task/${props.match.params._id}`).then(response => {
-            setId(response.data._id);
             setTitle(response.data.title);
             setMacaddress(response.data.macaddress);
             setType(response.data.type);
@@ -42,8 +44,13 @@ function Task(props) {
     }
 
     useEffect(() => {
-        lateVerify();
-        if (props.match.params._id) loadComponentsByID();
+        if (!isConnected) {
+            setRedirectQr(true);
+        } else {
+            setMacaddress(isConnected);
+            lateVerify();
+            if (props.match.params._id) loadComponentsByID();
+        }
     }, []);
 
     const validateFields = () => {
@@ -134,6 +141,7 @@ function Task(props) {
         <React.Fragment>
             <Styled.Container>
                 { redirect ? <Redirect to="/"/> : null }
+                { redirectQr ? <Redirect to="/qrcode" /> : null}
 
                 <Header lateCount={lateTask} />
 
