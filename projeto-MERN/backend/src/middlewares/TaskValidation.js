@@ -29,7 +29,7 @@ const TaskValidation = async(req, res, next) => {
         when(fieldValue) {
             if (!fieldValue) {
                 return {error: 'Data e hora são obrigatórios'}
-            } else if (isPast(new Date(fieldValue))) {
+            } else if (isPast(new Date(fieldValue)) && req.method === "POST") {
                 return {error: 'Escolha uma data e hora futura'}
             } 
         }        
