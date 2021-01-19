@@ -3,10 +3,13 @@ import { Text, View } from 'react-native';
 
 import styles from './styles';
 
+// Componentes
+import Header from '../../components/Header';
+
 function Home() {
     return (
         <View style={styles.container}>
-            <Text>Bem vindo a tela Home</Text>
+            <Header showNotification={true} showBack={false} />
         </View>
     )
 }
