@@ -25,10 +25,10 @@ function Header(props) {
             <Image source={logo} style={styles.logo}/>
             { 
                 props.showNotification ? 
-                <TouchableOpacity style={styles.notification}> 
+                <TouchableOpacity style={styles.notification} onPress={props.pressNotification}> 
                     <Image source={bell} style={styles.notificationImage}/>
                     <View style={styles.circle}>
-                        <Text style={styles.notificationText}>3</Text>
+                        <Text style={styles.notificationText}>{props.late}</Text>
                     </View>
                 </TouchableOpacity>
                 : null
